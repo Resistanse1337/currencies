@@ -22,16 +22,13 @@ class RatesView(ListAPIView):
         return CurrencyHistory.last_rates()
 
 
-class TrackedRatesView(APIView):
+class TrackedRatesView(ListAPIView):
     serializer_class = TrackedQuoteSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ["value"]
 
-    def get(self, request: Request):
-        tracked_quotes = TrackedQuote.tracked_quotes_for_user(request.user)
-        
-        tracked_quotes = TrackedQuoteSerializer(instance=tracked_quotes, many=True)
-        tracked_quotes = tracked_quotes.data
-
-        return Response(data=tracked_quotes, status=200)
+    def get_queryset(self):
+        return TrackedQuote.tracked_quotes_for_user(self.request.user)
 
 
 class TrackedQuoteView(CreateAPIView):
