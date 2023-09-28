@@ -1,12 +1,12 @@
 from datetime import date
 from decimal import Decimal
-from django.conf import settings
 
+from django.conf import settings
 from django.core.cache import cache
-from django.db.models import Max, F, Case, When, Value, Min, OuterRef, Subquery
 from django.db import models
-from django.utils.translation import gettext_lazy as _
+from django.db.models import Case, F, Max, Min, OuterRef, Subquery, Value, When
 from django.db.models.manager import BaseManager
+from django.utils.translation import gettext_lazy as _
 
 from common.models import LifetimeModel
 from users.models import User

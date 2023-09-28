@@ -5,15 +5,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rates.models import CurrencyHistory, TrackedQuote
 
-from rates.serializers import (
-    RatesAnalyticResultSerializer,
-    RatesAnalyticSerializer,
-    RatesSerializer,
-    TrackedQuoteSerializer,
-    TrackedQuoteAddSerializer,
-)
+from rates.models import CurrencyHistory, TrackedQuote
+from rates.serializers import (RatesAnalyticResultSerializer,
+                               RatesAnalyticSerializer, RatesSerializer,
+                               TrackedQuoteAddSerializer,
+                               TrackedQuoteSerializer)
 
 
 class RatesView(ListAPIView):

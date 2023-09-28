@@ -1,11 +1,13 @@
 from datetime import date
+
+from django.db.models import Q
 from django.test import TestCase
 from django.urls import reverse
-from django.db.models import Q
+
 from common.tests import CommonAPITestCase
 from rates.models import Currency, CurrencyHistory
-
-from rates.parser import get_rates, get_rates_data, get_url_by_date, parse_rates_data
+from rates.parser import (get_rates, get_rates_data, get_url_by_date,
+                          parse_rates_data)
 from rates.tasks import parse_rates_task
 
 

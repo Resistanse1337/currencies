@@ -1,7 +1,8 @@
-from decimal import Decimal
 from datetime import date, timedelta
-from django.conf import settings
+from decimal import Decimal
+
 import requests
+from django.conf import settings
 
 
 def get_url_by_date(date_: date) -> str:
