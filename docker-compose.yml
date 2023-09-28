@@ -1,0 +1,63 @@
+version: '3.8'
+
+x-django-base: &django-base
+  build:
+    context: ./.dockerfiles
+    dockerfile: Dockerfile
+  volumes:
+    - .:/currencies
+  env_file:
+    - ./.env/.env.dev
+  depends_on:
+    - db
+    - rabbitmq
+    - redis
+
+services:
+  web:
+    <<: *django-base
+    command: python3 manage.py runserver 0.0.0.0:8000
+    ports:
+      - 8000:8000
+      
+  db:
+    image: postgres:13.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env/.env.dev
+
+  rabbitmq:
+    image: rabbitmq:3.10.7-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - rabbitqm_log:/var/log/rabbitmq
+    env_file:
+      - ./.env/.env.dev
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/var/lib/redis
+    env_file:
+      - ./.env/.env.dev
+
+  celery:
+    <<: *django-base
+    command: celery -A currencies worker --loglevel=INFO
+
+  celery-beat:
+    <<: *django-base
+    command: celery -A currencies beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+
+
+volumes:
+  postgres_data:
+  rabbitmq_data:
+  rabbitqm_log:
+  redis_data:
